@@ -26,6 +26,7 @@ export const catchPokemon = async (req, res) => {
         data["MyPokemon"].push({
           id: uuidv4(),
           name: name,
+          nickName: name,
           version: 0
         });
         storeData(data);
