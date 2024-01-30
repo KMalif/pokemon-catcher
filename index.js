@@ -1,6 +1,4 @@
-import express, { Router } from "express";
-import joi from "joi";
-import fs from "fs";
+import express from "express";
 import routerPokemon from "./routes/pokemonRoute.js";
 const app = express();
 

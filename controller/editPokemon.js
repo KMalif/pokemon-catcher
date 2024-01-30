@@ -36,7 +36,7 @@ export const releasePokemon = async (req, res) => {
 
 export const renamePokemon = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req?.params;
     const data = loadData();
     const fibonacci = (num) => {
       if (num < 2) {
@@ -45,19 +45,14 @@ export const renamePokemon = async (req, res) => {
         return fibonacci(num - 1) + fibonacci(num - 2);
       }
     };
-    const selectedPokemon = data.MyPokemon.find((item) => item.id === id);
+    const selectedPokemon = data?.MyPokemon.find((item) => item.id === id);
 
     if (!selectedPokemon) {
       return handleClientError(res, 404, "You do not have a Pokemon with that ID.");
     }
 
-    const newVersion = selectedPokemon.version + 1;
-    if (newVersion > 15) {
-      return handleClientError(res, 403, "Be a premium member to rename your Pokemon again..");
-    }
-
     const newName = {
-      name: req.body.name,
+      name: req?.body?.name,
     };
     const scheme = joi.object({
       name: joi.string().required(),
@@ -68,17 +63,17 @@ export const renamePokemon = async (req, res) => {
     }
 
     const updatedPokemon = {
-      id: selectedPokemon.id,
-      name: `${newName.name}-${fibonacci(selectedPokemon.version)}`,
-      version: selectedPokemon.version + 1,
+      id: selectedPokemon?.id,
+      name: `${newName.name}-${fibonacci(selectedPokemon?.version)}`,
+      version: selectedPokemon?.version + 1,
     };
 
-    const filtered = data.MyPokemon.filter((item) => item.id !== id);
+    const filtered = data?.MyPokemon.filter((item) => item.id !== id);
     filtered.push(updatedPokemon);
     data.MyPokemon = filtered;
     storeData(data);
 
-    return res.status(200).json({ data: updatedPokemon, message: "Pokemon Renamed.." });
+    return res.status(200).json({ message: "Success update pokemon", status: 200, data: updatedPokemon });
   } catch (error) {
     return handleServerError(res);
   }
